@@ -1,3 +1,16 @@
+/* Lupa galería de arte */
+.zoom-lens {
+  position: absolute;
+  border: 2px solid #fff;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.18);
+  border-radius: 50%;
+  cursor: none;
+  pointer-events: none;
+  z-index: 10;
+  background: #fff;
+  background-clip: padding-box;
+  transition: box-shadow 0.2s;
+}
 * {
   margin: 0;
   padding: 0;
@@ -70,14 +83,13 @@ a {
   display: none;
 }
 
-.contacto-panel {
   position: absolute;
   right: 0;
   top: 42px;
   width: min(420px, calc(100vw - 48px));
   background: #ffffff;
   padding: 28px;
-  border-radius: 18px;
+  border-radius: 0;
   box-shadow: 0 18px 60px rgba(0, 0, 0, 0.18);
   z-index: 50;
 }
@@ -120,34 +132,34 @@ main {
   color: #3d3d3d;
 }
 
-.boceto {
   position: relative;
   margin-bottom: 70px;
   padding: 22px;
   background: #e8dfd2;
   border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 26px;
+  border-radius: 0;
 }
 
-.boceto-etiqueta {
   display: inline-block;
   margin-bottom: 16px;
   padding: 7px 12px;
   background: #171717;
   color: #fff;
-  border-radius: 999px;
+  border-radius: 0;
   font-size: 0.78rem;
   text-transform: uppercase;
   letter-spacing: 0.12em;
 }
 
-.boceto img {
   width: 100%;
   max-height: 780px;
   object-fit: contain;
   background: #f8f5ef;
-  border-radius: 18px;
+  border-radius: 0;
   cursor: zoom-in;
+  display: block;
+  margin: 0 auto;
+  padding: 24px;
 }
 
 .boceto-info {
@@ -163,15 +175,13 @@ main {
   color: #4a4a4a;
 }
 
-.galeria {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 34px;
 }
 
-.obra {
   background: #ffffff;
-  border-radius: 22px;
+  border-radius: 0;
   overflow: hidden;
   box-shadow: 0 12px 34px rgba(0, 0, 0, 0.08);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
@@ -187,12 +197,13 @@ main {
   background: #f7f4ef;
 }
 
-.obra img {
   width: 100%;
   height: 430px;
   object-fit: contain;
-  padding: 12px;
+  padding: 24px;
   cursor: zoom-in;
+  display: block;
+  margin: 0 auto;
 }
 
 .obra-info {
@@ -225,22 +236,20 @@ main {
   display: flex;
 }
 
-.lightbox img {
   max-width: 96vw;
   max-height: 86vh;
   object-fit: contain;
-  border-radius: 10px;
+  border-radius: 0;
   background: #f5f1ea;
 }
 
-.cerrar {
   position: fixed;
   top: 22px;
   right: 22px;
   color: #fff;
   border: 1px solid rgba(255, 255, 255, 0.45);
   padding: 9px 14px;
-  border-radius: 999px;
+  border-radius: 0;
   font-size: 0.9rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -259,6 +268,7 @@ main {
 
   .obra img {
     height: 380px;
+    padding: 24px;
   }
 }
 
@@ -285,6 +295,7 @@ main {
     width: 100%;
     margin-top: 16px;
     padding: 22px;
+    border-radius: 0;
   }
 
   main {
@@ -295,11 +306,12 @@ main {
   .boceto {
     padding: 14px;
     margin-bottom: 46px;
-    border-radius: 20px;
+    border-radius: 0;
   }
 
   .boceto img {
-    border-radius: 14px;
+    border-radius: 0;
+    padding: 24px;
   }
 
   .galeria {
@@ -308,13 +320,13 @@ main {
   }
 
   .obra {
-    border-radius: 20px;
+    border-radius: 0;
   }
 
   .obra img {
     height: auto;
     max-height: 76vh;
-    padding: 10px;
+    padding: 24px;
   }
 
   .obra-info {
@@ -328,5 +340,6 @@ main {
   .cerrar {
     top: 16px;
     right: 16px;
+    border-radius: 0;
   }
 }
