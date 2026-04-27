@@ -1,65 +1,73 @@
-// Efecto lupa para galería de arte
+// Efecto lupa circular para las imágenes ampliadas del lightbox
 
-// Espera a que el DOM esté listo
-window.addEventListener('DOMContentLoaded', function () {
-  const obras = document.querySelectorAll('.obra img');
-  const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+window.addEventListener("DOMContentLoaded", function () {
+  const imagenesZoom = document.querySelectorAll(".zoomable");
 
-  obras.forEach(img => {
-    // Crear lupa
-    const zoomLens = document.createElement('div');
-    zoomLens.className = 'zoom-lens';
-    img.parentElement.style.position = 'relative';
-    img.parentElement.appendChild(zoomLens);
-    zoomLens.style.display = 'none';
+  const lupa = document.createElement("div");
+  lupa.className = "lupa";
+  document.body.appendChild(lupa);
 
-    // Eventos
-    if (isTouch) {
-      img.addEventListener('touchstart', showLens, {passive: false});
-      img.addEventListener('touchmove', moveLens, {passive: false});
-      img.addEventListener('touchend', hideLens, {passive: false});
-    } else {
-      img.addEventListener('mouseenter', showLens);
-      img.addEventListener('mousemove', moveLens);
-      img.addEventListener('mouseleave', hideLens);
-    }
+  imagenesZoom.forEach(function (imagen) {
+    imagen.addEventListener("mouseenter", mostrarLupa);
+    imagen.addEventListener("mousemove", moverLupa);
+    imagen.addEventListener("mouseleave", ocultarLupa);
 
-    function showLens(e) {
-      e.preventDefault();
-      zoomLens.style.display = 'block';
-      moveLens(e);
-    }
-
-    function hideLens(e) {
-      zoomLens.style.display = 'none';
-    }
-
-    function moveLens(e) {
-      e.preventDefault();
-      let x, y;
-      const rect = img.getBoundingClientRect();
-      if (e.touches) {
-        x = e.touches[0].clientX - rect.left;
-        y = e.touches[0].clientY - rect.top;
-      } else {
-        x = e.clientX - rect.left;
-        y = e.clientY - rect.top;
-      }
-      // Limitar dentro de la imagen
-      x = Math.max(0, Math.min(x, rect.width));
-      y = Math.max(0, Math.min(y, rect.height));
-      // Tamaño y zoom
-      const lensSize = 120;
-      const zoom = 2.2;
-      zoomLens.style.width = lensSize + 'px';
-      zoomLens.style.height = lensSize + 'px';
-      zoomLens.style.left = (x - lensSize/2) + 'px';
-      zoomLens.style.top = (y - lensSize/2) + 'px';
-      zoomLens.style.backgroundImage = `url('${img.src}')`;
-      zoomLens.style.backgroundSize = (img.width * zoom) + 'px ' + (img.height * zoom) + 'px';
-      zoomLens.style.backgroundPosition = `-${x * zoom - lensSize/2}px -${y * zoom - lensSize/2}px`;
-      zoomLens.style.backgroundRepeat = 'no-repeat';
-      zoomLens.style.pointerEvents = 'none';
-    }
+    imagen.addEventListener("touchstart", mostrarLupa, { passive: false });
+    imagen.addEventListener("touchmove", moverLupa, { passive: false });
+    imagen.addEventListener("touchend", ocultarLupa);
+    imagen.addEventListener("touchcancel", ocultarLupa);
   });
+
+  function mostrarLupa(evento) {
+    evento.preventDefault();
+    lupa.classList.add("activa");
+    moverLupa(evento);
+  }
+
+  function ocultarLupa() {
+    lupa.classList.remove("activa");
+  }
+
+  function moverLupa(evento) {
+    evento.preventDefault();
+
+    const imagen = evento.currentTarget;
+    const rect = imagen.getBoundingClientRect();
+
+    let clientX;
+    let clientY;
+
+    if (evento.touches && evento.touches.length > 0) {
+      clientX = evento.touches[0].clientX;
+      clientY = evento.touches[0].clientY;
+    } else {
+      clientX = evento.clientX;
+      clientY = evento.clientY;
+    }
+
+    const x = clientX - rect.left;
+    const y = clientY - rect.top;
+
+    if (x < 0 || y < 0 || x > rect.width || y > rect.height) {
+      ocultarLupa();
+      return;
+    }
+
+    const lupaSize = lupa.offsetWidth || 150;
+    const zoom = 2.4;
+
+    lupa.style.left = clientX - lupaSize / 2 + "px";
+    lupa.style.top = clientY - lupaSize / 2 + "px";
+
+    lupa.style.backgroundImage = "url('" + imagen.src + "')";
+    lupa.style.backgroundSize = rect.width * zoom + "px " + rect.height * zoom + "px";
+
+    const backgroundX = x * zoom - lupaSize / 2;
+    const backgroundY = y * zoom - lupaSize / 2;
+
+    lupa.style.backgroundPosition = "-" + backgroundX + "px -" + backgroundY + "px";
+  }
+
+  window.addEventListener("hashchange", ocultarLupa);
+  window.addEventListener("scroll", ocultarLupa);
 });
